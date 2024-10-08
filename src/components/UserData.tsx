@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Patient } from "@/types/d.types";
+import { countries, typeDocument } from "@/utils/data";
 
 const PAGE_SIZES = [10, 15, 20];
 
@@ -19,30 +20,49 @@ export default function UserData({ data }: { data: Patient[] }) {
 
   return (
     <DataTable
+      className="mt-5 "
       withTableBorder
       records={records}
       columns={[
-        { accessor: "IPTIPODOC", title: "Tipo de Documento", width: 100 },
-        { accessor: "IPCODPACI", title: "Identificación", width: 100 },
-        { accessor: "IPPRINOMB", title: "Primer Nombre" },
-        { accessor: "IPSEGNOMB", title: "Segundo Nombre" },
-        { accessor: "IPNOMCOMP", title: "Primer Apellido" },
-        { accessor: "NIVCODIGO", title: "Segundo Apellido" },
+        {
+          accessor: "IPTIPODOC",
+          title: "Tipo de Documento",
+          width: "200px",
+          render: ({ IPTIPODOC }: Patient) => {
+            const documentType = typeDocument?.find(
+              (item: { value: string }) => item.value === IPTIPODOC.toString(),
+            );
+            return documentType ? documentType.label : "Desconocido";
+          },
+        },
+        { accessor: "IPCODPACI", title: "Identificación" },
+        { accessor: "IPNOMCOMP", title: "Nombre" },
         {
           accessor: "IPFECNACI",
           title: "Fecha de Nacimiento",
           textAlign: "right",
-          render: ({ IPFECNACI }: { IPFECNACI: string }) =>
+          render: ({ IPFECNACI }: Patient) =>
             dayjs(IPFECNACI).format("MMM D YYYY"),
         },
-        { accessor: "IDPAIS", title: "Pais" },
+        {
+          accessor: "IDPAIS",
+          title: "Pais",
+          render: ({ IDPAIS }: Patient) =>
+            countries?.find((c) => c.value === IDPAIS.toString())?.label,
+        },
         {
           accessor: "acciones",
           title: "Acciones",
           render: () => (
             <div className="flex gap-2">
-              <IconEdit />
-              <IconTrash />
+              <IconEdit
+                className="cursor-pointer hover:text-blue-500"
+                onClick={() => alert("Edit")}
+              />
+              <IconTrash
+                className="cursor-pointer hover:text-red-500"
+                onClick={() => alert("Delete")}
+              />
             </div>
           ),
         },

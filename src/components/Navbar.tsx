@@ -1,12 +1,12 @@
 "use client";
-import { IconUserFilled } from "@tabler/icons-react";
-import { Dropdown } from "./Dropdown";
-import { Flex } from "@mantine/core";
-import NavbarLink from "./NavbarLink";
+import { Dropdown } from "../atoms/Dropdown";
+import { Avatar, Flex, Text } from "@mantine/core";
+
+const userName = "John Doe";
 
 export function NavbarMinimal() {
   return (
-    <nav className="w-full p-3 flex bg-slate-900 justify-end">
+    <nav className="w-full p-3 flex bg-zinc-900 justify-end shadow-xl">
       <Flex
         gap="md"
         justify="center"
@@ -15,11 +15,10 @@ export function NavbarMinimal() {
         wrap="wrap"
       >
         <Dropdown />
-        <NavbarLink
-          icon={IconUserFilled}
-          label="My Profile"
-          onClick={() => alert("Profile")}
-        />
+        <Flex align="center" gap="xs">
+          <Avatar radius="xl" />
+          <Text>{userName}</Text>
+        </Flex>
       </Flex>
     </nav>
   );

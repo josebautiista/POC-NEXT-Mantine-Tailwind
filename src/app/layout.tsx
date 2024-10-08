@@ -9,6 +9,8 @@ import {
 import localFont from "next/font/local";
 import "./globals.css";
 import "@mantine/dates/styles.css";
+import "@mantine/core/styles.layer.css";
+import "mantine-datatable/styles.layer.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -58,7 +60,7 @@ export default function RootLayout({
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased bg-zinc-900">
         <MantineProvider theme={theme}>{children}</MantineProvider>
       </body>
     </html>

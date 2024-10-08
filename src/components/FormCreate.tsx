@@ -2,36 +2,9 @@
 import { Button, Grid, GridCol, Group, Select, TextInput } from "@mantine/core";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
-import { typeDocument } from "../utils/data";
-import { useEffect, useState } from "react";
-import { Country } from "@/types/d.types";
+import { countries, typeDocument } from "../utils/data";
 
 export default function FormCreate() {
-  const [countries, setCountries] = useState([]);
-  const fetchCountries = async () => {
-    try {
-      const response = await fetch(
-        "https://restcountries.com/v3.1/all?fields=cca3,name",
-      );
-
-      if (!response.ok) {
-        throw new Error("Error al obtener los países");
-      }
-
-      const data = await response.json();
-      const countryNames = data.map((country: Country) => ({
-        value: country.cca3,
-        label: country.name.common,
-      }));
-      setCountries(countryNames);
-    } catch (error) {
-      console.error("Error fetching countries:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCountries();
-  }, []);
   const form = useForm({
     initialValues: {
       identification: "",
