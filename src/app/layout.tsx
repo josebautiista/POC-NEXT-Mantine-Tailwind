@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@mantine/dates/styles.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,6 +31,16 @@ const theme = mergeMantineTheme(
   createTheme({
     fontFamily: geistSans.style.fontFamily,
     fontFamilyMonospace: geistMono.style.fontFamily,
+    autoContrast: true,
+    luminanceThreshold: 0.36,
+    focusRing: "never",
+    defaultRadius: "md",
+    cursorType: "pointer",
+    defaultGradient: {
+      from: "indigo",
+      to: "cyan",
+      deg: 45,
+    },
   }),
 );
 
@@ -42,6 +53,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <ColorSchemeScript />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+        />
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme}>{children}</MantineProvider>
