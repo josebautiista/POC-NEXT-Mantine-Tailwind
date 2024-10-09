@@ -1,33 +1,29 @@
 "use client";
-import { DataTable } from "mantine-datatable";
+import { DataTable, useDataTableColumns } from "mantine-datatable";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+
 import { Patient } from "@/types/d.types";
 import { countries, typeDocument } from "@/utils/data";
+import { DropDownActions } from "@/atoms/DropDownActions";
 
 const PAGE_SIZES = [10, 15, 20];
 
 export default function UserData({ data }: { data: Patient[] }) {
   const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
   const [page, setPage] = useState(1);
+  const key = "draggable-indira";
 
-  useEffect(() => {
-    setPage(1);
-  }, [pageSize]);
-
-  const records = data.slice((page - 1) * pageSize, page * pageSize);
-
-  return (
-    <DataTable
-      className="mt-5 "
-      withTableBorder
-      records={records}
-      columns={[
+  const { effectiveColumns, resetColumnsToggle } = useDataTableColumns<Patient>(
+    {
+      key,
+      columns: [
         {
           accessor: "IPTIPODOC",
           title: "Tipo de Documento",
           width: "200px",
+          draggable: true,
+          resizable: true,
           render: ({ IPTIPODOC }: Patient) => {
             const documentType = typeDocument?.find(
               (item: { value: string }) => item.value === IPTIPODOC.toString(),
@@ -35,40 +31,107 @@ export default function UserData({ data }: { data: Patient[] }) {
             return documentType ? documentType.label : "Desconocido";
           },
         },
-        { accessor: "IPCODPACI", title: "Identificación" },
-        { accessor: "IPNOMCOMP", title: "Nombre" },
+        {
+          accessor: "IPCODPACI",
+          title: "Identificación",
+          draggable: true,
+          resizable: true,
+        },
+        {
+          accessor: "IPPRINOMB",
+          title: "Primer Nombre",
+          ellipsis: true,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
+        },
+
+        {
+          accessor: "IPSEGNOMB",
+          title: "Segundo Nombre",
+          ellipsis: true,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
+        },
+        {
+          accessor: "IPPRIAPEL",
+          title: "Primer Apellido",
+          ellipsis: true,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
+        },
+        {
+          accessor: "IPSEGAPEL",
+          title: "Segundo Apellido",
+          ellipsis: true,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
+        },
+        {
+          accessor: "IPNOMCOMP",
+          title: "Nombre Completo",
+          ellipsis: true,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
+        },
         {
           accessor: "IPFECNACI",
           title: "Fecha de Nacimiento",
-          textAlign: "right",
           render: ({ IPFECNACI }: Patient) =>
             dayjs(IPFECNACI).format("MMM D YYYY"),
+          visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.xs})`,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
         },
         {
           accessor: "IDPAIS",
           title: "Pais",
           render: ({ IDPAIS }: Patient) =>
             countries?.find((c) => c.value === IDPAIS.toString())?.label,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
         },
         {
           accessor: "acciones",
           title: "Acciones",
-          render: () => (
-            <div className="flex gap-2">
-              <IconEdit
-                className="cursor-pointer hover:text-blue-500"
-                onClick={() => alert("Edit")}
-              />
-              <IconTrash
-                className="cursor-pointer hover:text-red-500"
-                onClick={() => alert("Delete")}
-              />
-            </div>
-          ),
+          width: "100px",
+          cellsClassName: "text-center",
+          render: () => <DropDownActions />,
+          draggable: true,
+          toggleable: true,
+          resizable: true,
         },
-      ]}
+      ],
+    },
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [pageSize]);
+
+  useEffect(() => {
+    resetColumnsToggle();
+  }, []);
+
+  const records = data.slice((page - 1) * pageSize, page * pageSize);
+
+  return (
+    <DataTable
+      pinLastColumn
+      storeColumnsKey={key}
+      striped
+      highlightOnHover
+      className="mt-5 "
+      withTableBorder
+      records={records}
+      columns={effectiveColumns}
       totalRecords={data.length}
-      paginationActiveBackgroundColor="grape"
       recordsPerPage={pageSize}
       page={page}
       onPageChange={(p: number) => setPage(p)}

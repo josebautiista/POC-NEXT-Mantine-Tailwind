@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.layer.css";
 import "mantine-datatable/styles.layer.css";
@@ -38,6 +39,7 @@ const theme = mergeMantineTheme(
     focusRing: "never",
     defaultRadius: "md",
     cursorType: "pointer",
+    primaryColor: "grape",
     defaultGradient: {
       from: "indigo",
       to: "cyan",

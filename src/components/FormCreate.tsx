@@ -3,6 +3,8 @@ import { Button, Grid, GridCol, Group, Select, TextInput } from "@mantine/core";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import { countries, typeDocument } from "../utils/data";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
 
 export default function FormCreate() {
   const form = useForm({
@@ -13,7 +15,7 @@ export default function FormCreate() {
       lastName: "",
       secondLastName: "",
       typeDocument: "1",
-      country: "COL",
+      country: "1",
       birthDate: "",
     },
 
@@ -33,18 +35,32 @@ export default function FormCreate() {
     },
   });
 
-  const handleValidation = () => {
+  const handleValidation = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     form.validate();
     if (form.isValid()) {
-      alert("Paciente creada correctamente");
+      const id = notifications.show({
+        loading: true,
+        message: "Creando paciente. Por favor, espere un momento...",
+        autoClose: false,
+        withCloseButton: false,
+      });
+
+      setTimeout(() => {
+        notifications.update({
+          id,
+          color: "teal",
+          message: "Paciente creado exitosamente",
+          icon: <IconCheck style={{ width: "1.5rem", height: "1.5rem" }} />,
+          loading: false,
+          autoClose: 2000,
+        });
+      }, 3000);
     }
   };
+
   return (
-    <form
-      onSubmit={form.onSubmit(() => {})}
-      style={{ marginTop: "2rem" }}
-      onSubmitCapture={handleValidation}
-    >
+    <form className="mt-5" onSubmitCapture={handleValidation}>
       <Grid
         columns={12}
         gutter="sm"
@@ -56,7 +72,7 @@ export default function FormCreate() {
           xl: "500px",
         }}
       >
-        <GridCol span={{ base: 12, lg: 4 }}>
+        <GridCol span={{ base: 12, lg: 6 }}>
           <TextInput
             label="Identificación"
             placeholder="Identificación"
@@ -73,30 +89,31 @@ export default function FormCreate() {
             {...form.getInputProps("firstName")}
           />
           <TextInput
-            label="Primer Apellido"
-            placeholder="Primer Apellido"
-            withAsterisk
-            mt="md"
-            key={form.key("lastName")}
-            {...form.getInputProps("lastName")}
-          />
-        </GridCol>
-        <GridCol span={{ base: 12, lg: 4 }}>
-          <Select
-            label="Tipo de Documento"
-            placeholder="Tipo de Documento"
-            withAsterisk
-            key={form.key("typeDocument")}
-            {...form.getInputProps("typeDocument")}
-            data={typeDocument}
-            checkIconPosition="right"
-          />
-          <TextInput
             label="Segundo Nombre"
             placeholder="Segundo Nombre"
             mt="md"
             key={form.key("secondName")}
             {...form.getInputProps("secondName")}
+          />
+
+          <Select
+            label="Tipo de Documento"
+            placeholder="Tipo de Documento"
+            withAsterisk
+            mt={"md"}
+            key={form.key("typeDocument")}
+            {...form.getInputProps("typeDocument")}
+            data={typeDocument}
+            checkIconPosition="right"
+          />
+        </GridCol>
+        <GridCol span={{ base: 12, lg: 6 }}>
+          <TextInput
+            label="Primer Apellido"
+            placeholder="Primer Apellido"
+            withAsterisk
+            key={form.key("lastName")}
+            {...form.getInputProps("lastName")}
           />
           <TextInput
             label="Segundo Apellido"
@@ -105,11 +122,11 @@ export default function FormCreate() {
             key={form.key("secondLastName")}
             {...form.getInputProps("secondLastName")}
           />
-        </GridCol>
-        <GridCol span={{ base: 12, lg: 4 }}>
+
           <Select
             label="Pais"
             placeholder="Pais"
+            mt={"md"}
             key={form.key("country")}
             {...form.getInputProps("country")}
             data={countries}
@@ -130,7 +147,7 @@ export default function FormCreate() {
 
       <Group justify="flex-end" mt="md">
         <Button type="submit">Guardar</Button>
-        <Button variant="filled" color="red" onClick={() => form.reset()}>
+        <Button variant="filled" color="#e64f57" onClick={() => form.reset()}>
           Limpiar
         </Button>
       </Group>

@@ -10,7 +10,7 @@ export default async function GridCustom() {
   const result = await response.json();
 
   return (
-    <Tabs defaultValue="create" color="grape">
+    <Tabs defaultValue="create">
       <TabsList>
         <TabsTab
           value="create"
