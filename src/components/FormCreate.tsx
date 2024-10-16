@@ -4,7 +4,15 @@ import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import { countries, typeDocument } from "../utils/data";
 import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
+import {
+  IconCake,
+  IconCheck,
+  IconIdBadge2,
+  IconUser,
+  IconUserFilled,
+  IconUserScan,
+  IconWorld,
+} from "@tabler/icons-react";
 
 export default function FormCreate() {
   const form = useForm({
@@ -30,7 +38,7 @@ export default function FormCreate() {
       birthDate: (value) => {
         const date = new Date(value);
         const today = new Date();
-        return value && date < today ? null : "Ingresa una fecha valida";
+        return value && date < today ? null : "Ingresa una fecha válida";
       },
     },
   });
@@ -61,41 +69,8 @@ export default function FormCreate() {
 
   return (
     <form className="mt-5" onSubmitCapture={handleValidation}>
-      <Grid
-        columns={12}
-        gutter="sm"
-        breakpoints={{
-          xs: "100px",
-          sm: "200px",
-          md: "300px",
-          lg: "700px",
-          xl: "500px",
-        }}
-      >
+      <Grid columns={12} gutter="sm">
         <GridCol span={{ base: 12, lg: 6 }}>
-          <TextInput
-            label="Identificación"
-            placeholder="Identificación"
-            withAsterisk
-            key={form.key("identification")}
-            {...form.getInputProps("identification")}
-          />
-          <TextInput
-            label="Primer Nombre"
-            placeholder="Primer Nombre"
-            withAsterisk
-            mt="md"
-            key={form.key("firstName")}
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            label="Segundo Nombre"
-            placeholder="Segundo Nombre"
-            mt="md"
-            key={form.key("secondName")}
-            {...form.getInputProps("secondName")}
-          />
-
           <Select
             label="Tipo de Documento"
             placeholder="Tipo de Documento"
@@ -105,15 +80,25 @@ export default function FormCreate() {
             {...form.getInputProps("typeDocument")}
             data={typeDocument}
             checkIconPosition="right"
+            leftSection={<IconUserScan className="w-4 h-4" />}
           />
-        </GridCol>
-        <GridCol span={{ base: 12, lg: 6 }}>
+          <TextInput
+            label="Primer Nombre"
+            placeholder="Primer Nombre"
+            withAsterisk
+            mt="md"
+            key={form.key("firstName")}
+            {...form.getInputProps("firstName")}
+            leftSection={<IconUserFilled className="w-4 h-4" />}
+          />
           <TextInput
             label="Primer Apellido"
             placeholder="Primer Apellido"
             withAsterisk
+            mt="md"
             key={form.key("lastName")}
             {...form.getInputProps("lastName")}
+            leftSection={<IconUserFilled className="w-4 h-4" />}
           />
           <TextInput
             label="Segundo Apellido"
@@ -121,11 +106,30 @@ export default function FormCreate() {
             mt="md"
             key={form.key("secondLastName")}
             {...form.getInputProps("secondLastName")}
+            leftSection={<IconUser className="w-4 h-4" />}
           />
-
+        </GridCol>
+        <GridCol span={{ base: 12, lg: 6 }}>
+          <TextInput
+            label="Identificación"
+            placeholder="Identificación"
+            withAsterisk
+            mt="md"
+            key={form.key("identification")}
+            {...form.getInputProps("identification")}
+            leftSection={<IconIdBadge2 className="w-4 h-4" />}
+          />
+          <TextInput
+            label="Segundo Nombre"
+            placeholder="Segundo Nombre"
+            mt="md"
+            key={form.key("secondName")}
+            {...form.getInputProps("secondName")}
+            leftSection={<IconUser className="w-4 h-4" />}
+          />
           <Select
-            label="Pais"
-            placeholder="Pais"
+            label="País"
+            placeholder="País"
             mt={"md"}
             key={form.key("country")}
             {...form.getInputProps("country")}
@@ -133,6 +137,7 @@ export default function FormCreate() {
             checkIconPosition="right"
             searchable
             nothingFoundMessage="No existe"
+            leftSection={<IconWorld className="w-4 h-4" />}
           />
           <DateInput
             label="Fecha de Nacimiento"
@@ -141,6 +146,7 @@ export default function FormCreate() {
             key={form.key("birthDate")}
             {...form.getInputProps("birthDate")}
             mt="md"
+            leftSection={<IconCake className="w-4 h-4" />}
           />
         </GridCol>
       </Grid>

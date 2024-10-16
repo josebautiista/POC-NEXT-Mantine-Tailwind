@@ -123,6 +123,7 @@ export default function UserData({ data }: { data: Patient[] }) {
 
   return (
     <DataTable
+      idAccessor="ID"
       pinLastColumn
       storeColumnsKey={key}
       striped
